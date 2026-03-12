@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Windows.Forms;
 using WinFormsApp_OOP_Lab3_Singleton;
 
@@ -21,7 +22,7 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             dataGridViewHouses.Rows.Clear();
             dataGridViewHouses.Columns.Clear();
 
-            // Заголовки столбцов
+            // Заголовки столбцов (без изменений)
             dataGridViewHouses.Columns.Add("Key", "Ключ");
             dataGridViewHouses.Columns.Add("Street", "Улица");
             dataGridViewHouses.Columns.Add("City", "Город");
@@ -32,7 +33,11 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             dataGridViewHouses.Columns.Add("Floors", "Этажи");
 
             var entries = _collection.GetAllEntries();
-            foreach (DictionaryEntry entry in entries)
+
+            // Сортировка по ключу (по возрастанию)
+            var sortedEntries = entries.OrderBy(e => (int)e.Key).ToArray();
+
+            foreach (DictionaryEntry entry in sortedEntries)
             {
                 int key = (int)entry.Key;
                 House house = (House)entry.Value;
@@ -49,12 +54,22 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             }
         }
 
+        // Добавление случайного дома с ключом из NumericUpDown
         private void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
-                int newKey = _collection.GetItemCount(); // простой способ: следующий индекс
-                _collection.AddRandomItem(newKey);
+                int key = (int)numericUpDownKey.Value;
+
+                // Проверяем, не занят ли ключ
+                if (_collection.Table.ContainsKey(key))
+                {
+                    MessageBox.Show($"Ключ {key} уже существует. Выберите другой ключ.", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                _collection.AddRandomItem(key);
                 RefreshGrid();
             }
             catch (Exception ex)
@@ -63,11 +78,20 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             }
         }
 
+        // Удаление по ключу из NumericUpDown
         private void btnDelete_Click(object sender, EventArgs e)
         {
             try
             {
                 int key = (int)numericUpDownKey.Value;
+
+                if (!_collection.Table.ContainsKey(key))
+                {
+                    MessageBox.Show($"Ключ {key} не найден.", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 _collection.Remove(key);
                 RefreshGrid();
             }
@@ -77,28 +101,43 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             }
         }
 
+        // Редактирование дома по ключу из NumericUpDown
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (dataGridViewHouses.SelectedRows.Count == 0)
+            try
             {
-                MessageBox.Show("Выберите дом для редактирования.");
-                return;
+                int key = (int)numericUpDownKey.Value;
+
+                if (!_collection.Table.ContainsKey(key))
+                {
+                    MessageBox.Show($"Ключ {key} не найден.", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                House house = (House)_collection.Table[key];
+
+                using (var editForm = new EditForm(house, key))
+                {
+                    editForm.ShowDialog();
+                }
+                RefreshGrid();
             }
-
-            int key = (int)dataGridViewHouses.SelectedRows[0].Cells["Key"].Value;
-            House house = (House)_collection.Table[key];
-
-            using (var editForm = new EditForm(house, key))
+            catch (Exception ex)
             {
-                editForm.ShowDialog();
+                ExceptionHandler.MessageBox(this.Handle, ex.Message, "Ошибка", 16);
             }
-            RefreshGrid();
         }
 
         private void btnShowSecondForm_Click(object sender, EventArgs e)
         {
             SecondForm secondForm = new SecondForm();
             secondForm.Show();
+        }
+
+        private void lblKey_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

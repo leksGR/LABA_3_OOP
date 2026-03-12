@@ -54,9 +54,9 @@
             btnAdd.Location = new Point(304, 410);
             btnAdd.Margin = new Padding(3, 4, 3, 4);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(150, 38);
+            btnAdd.Size = new Size(150, 66);
             btnAdd.TabIndex = 3;
-            btnAdd.Text = "Добавить случайный дом";
+            btnAdd.Text = "Добавить по ключу";
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += btnAdd_Click;
             // 
@@ -65,7 +65,7 @@
             btnDelete.Location = new Point(494, 410);
             btnDelete.Margin = new Padding(3, 4, 3, 4);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(120, 38);
+            btnDelete.Size = new Size(120, 66);
             btnDelete.TabIndex = 4;
             btnDelete.Text = "Удалить по ключу";
             btnDelete.UseVisualStyleBackColor = true;
@@ -76,9 +76,9 @@
             btnEdit.Location = new Point(653, 410);
             btnEdit.Margin = new Padding(3, 4, 3, 4);
             btnEdit.Name = "btnEdit";
-            btnEdit.Size = new Size(120, 38);
+            btnEdit.Size = new Size(120, 66);
             btnEdit.TabIndex = 5;
-            btnEdit.Text = "Редактировать";
+            btnEdit.Text = "Редактировать по ключу";
             btnEdit.UseVisualStyleBackColor = true;
             btnEdit.Click += btnEdit_Click;
             // 
@@ -87,7 +87,7 @@
             btnShowSecondForm.Location = new Point(821, 410);
             btnShowSecondForm.Margin = new Padding(3, 4, 3, 4);
             btnShowSecondForm.Name = "btnShowSecondForm";
-            btnShowSecondForm.Size = new Size(160, 38);
+            btnShowSecondForm.Size = new Size(160, 66);
             btnShowSecondForm.TabIndex = 6;
             btnShowSecondForm.Text = "Показать вторую форму";
             btnShowSecondForm.UseVisualStyleBackColor = true;
@@ -95,7 +95,7 @@
             // 
             // numericUpDownKey
             // 
-            numericUpDownKey.Location = new Point(173, 413);
+            numericUpDownKey.Location = new Point(96, 431);
             numericUpDownKey.Margin = new Padding(3, 4, 3, 4);
             numericUpDownKey.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
             numericUpDownKey.Name = "numericUpDownKey";
@@ -105,11 +105,12 @@
             // lblKey
             // 
             lblKey.AutoSize = true;
-            lblKey.Location = new Point(12, 415);
+            lblKey.Location = new Point(31, 433);
             lblKey.Name = "lblKey";
-            lblKey.Size = new Size(146, 20);
+            lblKey.Size = new Size(46, 20);
             lblKey.TabIndex = 2;
-            lblKey.Text = "Ключ для удаления:";
+            lblKey.Text = "Ключ";
+            lblKey.Click += lblKey_Click;
             // 
             // MainForm
             // 
@@ -125,7 +126,7 @@
             Controls.Add(dataGridViewHouses);
             Margin = new Padding(3, 4, 3, 4);
             Name = "MainForm";
-            Text = "Лабораторная работа №3 (Singleton)";
+            Text = "Лабораторная работа №3 ";
             ((System.ComponentModel.ISupportInitialize)dataGridViewHouses).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDownKey).EndInit();
             ResumeLayout(false);

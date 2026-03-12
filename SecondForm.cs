@@ -21,17 +21,22 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             dataGridViewHouses.Rows.Clear();
             dataGridViewHouses.Columns.Clear();
 
+            // Заголовки столбцов (без изменений)
             dataGridViewHouses.Columns.Add("Key", "Ключ");
             dataGridViewHouses.Columns.Add("Street", "Улица");
             dataGridViewHouses.Columns.Add("City", "Город");
-            dataGridViewHouses.Columns.Add("Year", "Год");
+            dataGridViewHouses.Columns.Add("Year", "Год постройки");
             dataGridViewHouses.Columns.Add("Apartments", "Квартиры");
             dataGridViewHouses.Columns.Add("Value", "Стоимость");
             dataGridViewHouses.Columns.Add("Area", "Площадь");
             dataGridViewHouses.Columns.Add("Floors", "Этажи");
 
             var entries = _collection.GetAllEntries();
-            foreach (DictionaryEntry entry in entries)
+
+            // Сортировка по ключу (по возрастанию)
+            var sortedEntries = entries.OrderBy(e => (int)e.Key).ToArray();
+
+            foreach (DictionaryEntry entry in sortedEntries)
             {
                 int key = (int)entry.Key;
                 House house = (House)entry.Value;

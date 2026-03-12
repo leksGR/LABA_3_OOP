@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using WinFormsApp_OOP_Lab3_Singleton.Forms;
+using WinFormsApp_OOP_Lab3_Singleton;
 
 namespace WinFormsApp_OOP_Lab3_Singleton
 {
