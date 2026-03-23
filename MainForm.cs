@@ -1,8 +1,9 @@
-using System;
+п»їusing System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using WinFormsApp_OOP_Lab3_Singleton;
+using WinFormsApp_OOP_Lab3_Singleton.Model;
 
 namespace WinFormsApp_OOP_Lab3_Singleton.Forms
 {
@@ -22,25 +23,31 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             dataGridViewHouses.Rows.Clear();
             dataGridViewHouses.Columns.Clear();
 
-            // Заголовки столбцов (без изменений)
-            dataGridViewHouses.Columns.Add("Key", "Ключ");
-            dataGridViewHouses.Columns.Add("Street", "Улица");
-            dataGridViewHouses.Columns.Add("City", "Город");
-            dataGridViewHouses.Columns.Add("Year", "Год постройки");
-            dataGridViewHouses.Columns.Add("Apartments", "Квартиры");
-            dataGridViewHouses.Columns.Add("Value", "Стоимость");
-            dataGridViewHouses.Columns.Add("Area", "Площадь");
-            dataGridViewHouses.Columns.Add("Floors", "Этажи");
+            // Р—Р°РіРѕР»РѕРІРєРё СЃС‚РѕР»Р±С†РѕРІ
+            dataGridViewHouses.Columns.Add("Key", "РљР»СЋС‡");
+            dataGridViewHouses.Columns.Add("Street", "РЈР»РёС†Р°");
+            dataGridViewHouses.Columns.Add("City", "Р“РѕСЂРѕРґ");
+            dataGridViewHouses.Columns.Add("Year", "Р“РѕРґ РїРѕСЃС‚СЂРѕР№РєРё");
+            dataGridViewHouses.Columns.Add("Apartments", "РљРІР°СЂС‚РёСЂС‹");
+            dataGridViewHouses.Columns.Add("Value", "РЎС‚РѕРёРјРѕСЃС‚СЊ");
+            dataGridViewHouses.Columns.Add("Area", "РџР»РѕС‰Р°РґСЊ");
+            dataGridViewHouses.Columns.Add("Floors", "Р­С‚Р°Р¶Рё");
+
+            // РљРѕР»РѕРЅРєР° СЃ РёРЅС„РѕСЂРјР°С†РёРµР№ С‡РµСЂРµР· Adapter
+            dataGridViewHouses.Columns.Add("FullInfo", "РџРѕР»РЅР°СЏ РёРЅС„РѕСЂРјР°С†РёСЏ (Adapter)");
+            dataGridViewHouses.Columns["FullInfo"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewHouses.Columns["FullInfo"].MinimumWidth = 300;
 
             var entries = _collection.GetAllEntries();
-
-            // Сортировка по ключу (по возрастанию)
             var sortedEntries = entries.OrderBy(e => (int)e.Key).ToArray();
 
             foreach (DictionaryEntry entry in sortedEntries)
             {
                 int key = (int)entry.Key;
                 House house = (House)entry.Value;
+
+                IHouseInfo adapter = new HouseAdapter(house);
+
                 dataGridViewHouses.Rows.Add(
                     key,
                     house.Street,
@@ -49,22 +56,22 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
                     house.ApartmentsCount,
                     house.Value.ToString("C"),
                     house.Area,
-                    house.FloorsCount
+                    house.FloorsCount,
+                    adapter.GetFullInfo() // РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ Adapter
                 );
             }
         }
 
-        // Добавление случайного дома с ключом из NumericUpDown
+        // Р”РѕР±Р°РІР»РµРЅРёРµ РґРѕРјР° РїРѕ РєР»СЋС‡Сѓ
         private void btnAdd_Click(object sender, EventArgs e)
         {
             try
             {
                 int key = (int)numericUpDownKey.Value;
 
-                // Проверяем, не занят ли ключ
                 if (_collection.Table.ContainsKey(key))
                 {
-                    MessageBox.Show($"Ключ {key} уже существует. Выберите другой ключ.", "Ошибка",
+                    MessageBox.Show($"РљР»СЋС‡ {key} СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚. Р’С‹Р±РµСЂРёС‚Рµ РґСЂСѓРіРѕР№ РєР»СЋС‡.", "РћС€РёР±РєР°",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -74,11 +81,11 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             }
             catch (Exception ex)
             {
-                ExceptionHandler.MessageBox(this.Handle, ex.Message, "Ошибка", 16);
+                ExceptionHandler.MessageBox(this.Handle, ex.Message, "РћС€РёР±РєР°", 16);
             }
         }
 
-        // Удаление по ключу из NumericUpDown
+        // РЈРґР°Р»РµРЅРёРµ РґРѕРјР° РїРѕ РєР»СЋС‡Сѓ
         private void btnDelete_Click(object sender, EventArgs e)
         {
             try
@@ -87,7 +94,7 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
 
                 if (!_collection.Table.ContainsKey(key))
                 {
-                    MessageBox.Show($"Ключ {key} не найден.", "Ошибка",
+                    MessageBox.Show($"РљР»СЋС‡ {key} РЅРµ РЅР°Р№РґРµРЅ.", "РћС€РёР±РєР°",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -97,11 +104,11 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             }
             catch (Exception ex)
             {
-                ExceptionHandler.MessageBox(this.Handle, ex.Message, "Ошибка", 16);
+                ExceptionHandler.MessageBox(this.Handle, ex.Message, "РћС€РёР±РєР°", 16);
             }
         }
 
-        // Редактирование дома по ключу из NumericUpDown
+        // Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РґРѕРјР° РїРѕ РєР»СЋС‡Сѓ
         private void btnEdit_Click(object sender, EventArgs e)
         {
             try
@@ -110,7 +117,7 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
 
                 if (!_collection.Table.ContainsKey(key))
                 {
-                    MessageBox.Show($"Ключ {key} не найден.", "Ошибка",
+                    MessageBox.Show($"РљР»СЋС‡ {key} РЅРµ РЅР°Р№РґРµРЅ.", "РћС€РёР±РєР°",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -125,19 +132,19 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             }
             catch (Exception ex)
             {
-                ExceptionHandler.MessageBox(this.Handle, ex.Message, "Ошибка", 16);
+                ExceptionHandler.MessageBox(this.Handle, ex.Message, "РћС€РёР±РєР°", 16);
             }
         }
 
-        private void btnShowSecondForm_Click(object sender, EventArgs e)
-        {
-            SecondForm secondForm = new SecondForm();
-            secondForm.Show();
-        }
-
+       
         private void lblKey_Click(object sender, EventArgs e)
         {
+            // Р—Р°РіР»СѓС€РєР°
+        }
 
+        private void dataGridViewHouses_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Р—Р°РіР»СѓС€РєР°
         }
     }
 }

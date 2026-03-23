@@ -218,6 +218,7 @@
             MaximizeBox = false;
             Name = "EditForm";
             Text = "Редактирование дома";
+            Load += EditForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -7,7 +7,6 @@
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnEdit;
-        private System.Windows.Forms.Button btnShowSecondForm;
         private System.Windows.Forms.NumericUpDown numericUpDownKey;
         private System.Windows.Forms.Label lblKey;
 
@@ -28,7 +27,6 @@
             btnAdd = new Button();
             btnDelete = new Button();
             btnEdit = new Button();
-            btnShowSecondForm = new Button();
             numericUpDownKey = new NumericUpDown();
             lblKey = new Label();
             ((System.ComponentModel.ISupportInitialize)dataGridViewHouses).BeginInit();
@@ -46,8 +44,9 @@
             dataGridViewHouses.ReadOnly = true;
             dataGridViewHouses.RowHeadersWidth = 51;
             dataGridViewHouses.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewHouses.Size = new Size(969, 372);
+            dataGridViewHouses.Size = new Size(1207, 372);
             dataGridViewHouses.TabIndex = 0;
+            dataGridViewHouses.CellContentClick += dataGridViewHouses_CellContentClick;
             // 
             // btnAdd
             // 
@@ -82,17 +81,6 @@
             btnEdit.UseVisualStyleBackColor = true;
             btnEdit.Click += btnEdit_Click;
             // 
-            // btnShowSecondForm
-            // 
-            btnShowSecondForm.Location = new Point(821, 410);
-            btnShowSecondForm.Margin = new Padding(3, 4, 3, 4);
-            btnShowSecondForm.Name = "btnShowSecondForm";
-            btnShowSecondForm.Size = new Size(160, 66);
-            btnShowSecondForm.TabIndex = 6;
-            btnShowSecondForm.Text = "Показать вторую форму";
-            btnShowSecondForm.UseVisualStyleBackColor = true;
-            btnShowSecondForm.Click += btnShowSecondForm_Click;
-            // 
             // numericUpDownKey
             // 
             numericUpDownKey.Location = new Point(96, 431);
@@ -116,8 +104,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1042, 505);
-            Controls.Add(btnShowSecondForm);
+            ClientSize = new Size(1231, 505);
             Controls.Add(btnEdit);
             Controls.Add(btnDelete);
             Controls.Add(btnAdd);

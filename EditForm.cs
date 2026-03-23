@@ -56,5 +56,10 @@ namespace WinFormsApp_OOP_Lab3_Singleton.Forms
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
+        private void EditForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
